@@ -7,7 +7,8 @@ type Availability_Map = {
 
 type Availability_Child = {
     booked: Set<number>,
-    edges: Array<Node>
+    edges: Array<Node>,
+    available: Set<number>
 }
 
 
@@ -36,7 +37,8 @@ class Graph {
         this.time_frames.forEach((dentist, idx) => {
             this.availability_map[idx] = {
                 booked: new Set(),
-                edges: []
+                edges: [],
+                available: new Set([0, 60, 120, 180, 240, 300, 360, 420, 480, 540, 600, 660, 720, 780, 840, 900, 960, 1020, 1080, 1140, 1200, 1260, 1320, 1380, 1440])
             }
             dentist.forEach(time => {
                 for (let i = time.start; i < time.end; i += 60) {
@@ -62,8 +64,11 @@ class Graph {
             for(let i = 0; i < this.nodes.length; i++) {
                 const node = this.nodes[i];
                 if(dentist_slots.booked.has(node.start)) {
-                    // For quick checking of if a node is available
+                    // Creation of graph structure
                     dentist_slots.edges.push(node);
+
+                    // Remove from available slots
+                    dentist_slots.available.delete(node.start);
 
                     // For checking if time slot is booked
                     node.no_of_vertices++;
@@ -83,10 +88,25 @@ class Graph {
         return available_slots;
     }
 
+    public make_data_visible() {
+        const availability_map_copy: any = this.availability_map
+
+        for(let dentist in availability_map_copy) {
+            availability_map_copy[dentist].booked = Array.from(availability_map_copy[dentist].booked)
+            availability_map_copy[dentist].available = Array.from(availability_map_copy[dentist].available)
+        }
+
+        return availability_map_copy
+    }
+
+    public find_available_slots(dentist: number) {
+        return Array.from(this.availability_map[dentist].available);
+    }
+
 }
 
-export function parse() {
-    const graph = new Graph([dentist_a, dentist_b]);
+export function parse(schedules: Array<Array<{start: number, end: number}>>) {
+    const graph = new Graph(schedules);
     graph.create_availability_map();
     graph.create_graph();
     return graph;
