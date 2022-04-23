@@ -39,10 +39,10 @@ const App: React.FC = () => {
         {numberOfDentists < 4 && <Button onClick={() => handleClick('add')}>Add Dentist</Button>}
         <Button onClick={() => handleClick('delete')}>Delete Dentist</Button>
       </ButtonContainer>
-      {graph && <h3>Available Times: {graph.find_both_available().map((arg: number) => `${arg}, `)}</h3>}
-      <GraphDisplay>
+      {stringifiedGraph.length > 3 && numberOfDentists > 0 && <h3>Available Times: {graph.find_both_available().map((arg: number) => `${arg}, `)}</h3>}
+      { numberOfDentists > 0 && <GraphDisplay>
         {stringifiedGraph}
-      </GraphDisplay>
+      </GraphDisplay>}
     </StyledApp>
   );
 }

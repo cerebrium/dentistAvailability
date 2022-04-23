@@ -77,6 +77,7 @@ class Graph {
         }
     }
 
+    // Find the nodes with 0 edges
     public find_both_available() {
         const available_slots = [];
         for(let i = 0; i < this.nodes.length; i++) {
@@ -88,6 +89,7 @@ class Graph {
         return available_slots;
     }
 
+    // Converts the sets into arrays so can be displayed
     public make_data_visible() {
         const availability_map_copy: any = this.availability_map
 
@@ -99,6 +101,7 @@ class Graph {
         return availability_map_copy
     }
 
+    // The times available for a dentist
     public find_available_slots(dentist: number) {
         return Array.from(this.availability_map[dentist].available);
     }
