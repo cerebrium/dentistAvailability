@@ -33,7 +33,11 @@ const InputComponent: React.FC<Props> = ({ number}) => {
                     if (typeof arg.start !== 'number' || typeof arg.end !== 'number') {
                         return false
                     }
+                } else {
+                    return false
                 }
+            } else {
+                return false
             }
         })
 
